@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "start": "nodemon src/bot.ts"
+    "start": "nodemon src/bot.ts",
+    "testSpin": "nodemon src/testSpin.ts"
   },
   "keywords": [],
   "author": "",
