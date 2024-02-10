@@ -40,6 +40,7 @@ function spin() {
   var width = screenSize.width / 2;
 
   robot.moveMouse(width, height);
+  robot.mouseClick();
 }
 
 // // Sends SPIN_MESSAGE through serial if there are unsent spins left.
