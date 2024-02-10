@@ -1,20 +1,6 @@
-import { SerialPort } from "serialport";
 import * as dotenv from "dotenv";
 import { Client, GatewayIntentBits } from "discord.js";
-
-const PORT = "COM3";
-const BAUD_RATE = 9600;
-const SPIN_MESSAGE = "1";
-
-let spinsLeft = 0;
-
-// Create serial port connection
-const serialPort = new SerialPort({
-  path: PORT,
-  baudRate: BAUD_RATE,
-  autoOpen: true,
-});
-serialPort.on("error", console.log);
+import * as robot from "robotjs";
 
 // Get bot token from ./env
 dotenv.config();
@@ -25,16 +11,19 @@ if (BOT_TOKEN == undefined) throw new Error("MAKE SURE TO PUT A BOT_TOKEN env va
 const client = new Client({ intents: [GatewayIntentBits.GuildMembers] });
 client.on("guildMemberAdd", () => {
   console.log("New user joined, sending spin message");
-  spinsLeft++;
+  spin();
 });
 client.login(BOT_TOKEN);
 
-// Sends SPIN_MESSAGE through serial if there are unsent spins left.
-serialPort.on("data", () => {
-  if (spinsLeft) {
-    spinsLeft--;
-    serialPort.write(SPIN_MESSAGE);
-  }
-});
+function spin() {
+  robot.setMouseDelay(2);
+
+  var screenSize = robot.getScreenSize();
+  var height = screenSize.height / 2 - 10;
+  var width = screenSize.width / 2;
+
+  robot.moveMouse(width, height);
+  robot.mouseClick();
+}
 
 console.log("Bot Started");
